@@ -3,7 +3,7 @@
   "description": "A PHP API for interacting with Tron (Trx),support Stake2.0",
   "license": "MIT",
   "type": "library",
-  "homepage": "https://github.com/ufado/tron-api",
+  "homepage": "https://github.com/shaozi17/tron-api",
   "authors": [
     {
       "name": "Shamsudin Serderov",
