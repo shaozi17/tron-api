@@ -1,5 +1,5 @@
 {
-  "name": "ufado/tron-api",
+  "name": "shaozi17/tron-api",
   "description": "A PHP API for interacting with Tron (Trx),support Stake2.0",
   "license": "MIT",
   "type": "library",
