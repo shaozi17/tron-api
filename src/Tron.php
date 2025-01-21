@@ -1281,7 +1281,7 @@ class Tron implements TronInterface
         if (strlen($address) !== self::ADDRESS_SIZE)
             return false;
 
-        if (strlen($utf8) !== 25 or strpos($utf8, self::ADDRESS_PREFIX_BYTE) !== 0)
+        if (strlen($utf8) !== 25 or strpos($utf8, chr(self::ADDRESS_PREFIX_BYTE)) !== 0)
             return false;
 
         $checkSum = substr($utf8, 21);
