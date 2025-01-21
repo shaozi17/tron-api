@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace IEXBase\TronAPI\Provider;
 
@@ -28,4 +30,6 @@ interface HttpProviderInterface
      * @return array
      */
     public function request($url, array $payload = [], string $method = 'get'): array;
+
+    public function getClient();
 }
