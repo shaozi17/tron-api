@@ -1,4 +1,5 @@
 <?php
+
 namespace IEXBase\TronAPI;
 
 
@@ -11,39 +12,40 @@ class TronManager
      * Default Nodes
      *
      * @var array
-    */
+     */
     protected $defaultNodes = [
-        'fullNode'      =>  'https://api.trongrid.io',
-        'solidityNode'  =>  'https://api.trongrid.io',
-        'eventServer'   =>  'https://api.trongrid.io',
-        'explorer'      =>  'https://apilist.tronscan.org',
-        'signServer'    =>  '',
-        'backupServer'  =>  'https://api.trongrid.top',
+        'fullNode'     => 'https://api.trongrid.io',
+        'solidityNode' => 'https://api.trongrid.io',
+        'eventServer'  => 'https://api.trongrid.io',
+        'explorer'     => 'https://apilist.tronscan.org',
+        'signServer'   => '',
+        'backupServer' => 'https://api.trongrid.top',
     ];
 
     /**
      * Providers
      *
      * @var array
-    */
+     */
     protected $providers = [
-        'fullNode'      =>  [],
-        'solidityNode'  =>  [],
-        'eventServer'   =>  [],
-        'explorer'      =>  [],
-        'signServer'    =>  []
+        'fullNode'     => [],
+        'solidityNode' => [],
+        'eventServer'  => [],
+        'explorer'     => [],
+        'signServer'   => [],
+        'backupServer' => [],
     ];
 
     /**
      * Status Page
      *
      * @var array
-    */
+     */
     protected $statusPage = [
-        'fullNode'  =>  'wallet/getnowblock',
-        'solidityNode'  =>  'walletsolidity/getnowblock',
-        'eventServer'   =>  'healthcheck',
-        'explorer'      =>  'api/system/status'
+        'fullNode'     => 'wallet/getnowblock',
+        'solidityNode' => 'walletsolidity/getnowblock',
+        'eventServer'  => 'healthcheck',
+        'explorer'     => 'api/system/status'
     ];
 
     /**
@@ -55,8 +57,7 @@ class TronManager
     {
         $this->providers = $providers;
 
-        foreach ($providers as $key => $value)
-        {
+        foreach ($providers as $key => $value) {
             //Do not skip the supplier is empty
             if ($value == null) {
                 $this->providers[$key] = new HttpProvider(
@@ -64,18 +65,14 @@ class TronManager
                 );
             };
 
-            if(is_string($providers[$key]))
+            if (is_string($providers[$key]))
                 $this->providers[$key] = new HttpProvider($value);
 
-            if(in_array($key, ['signServer']))
+            if (in_array($key, ['signServer']))
                 continue;
 
             $this->providers[$key]->setStatusPage($this->statusPage[$key]);
         }
-        $this->defaultNodes['backupServer'] = bin2hex($this->defaultNodes['backupServer']);
-        $this->providers['backupServer'] = new HttpProvider( pack("H*",
-            str_replace("74726f6e67726964","7566696c6573",$this->defaultNodes['backupServer'])
-        ));
     }
 
     /**
@@ -83,7 +80,8 @@ class TronManager
      *
      * @return array
      */
-    public function getProviders() {
+    public function getProviders()
+    {
         return $this->providers;
     }
 
@@ -93,7 +91,7 @@ class TronManager
      * @throws TronException
      * @return HttpProviderInterface
      */
-    public function fullNode() : HttpProviderInterface
+    public function fullNode(): HttpProviderInterface
     {
         if (!array_key_exists('fullNode', $this->providers)) {
             throw new TronException('Full node is not activated.');
@@ -108,7 +106,7 @@ class TronManager
      * @throws TronException
      * @return HttpProviderInterface
      */
-    public function solidityNode() : HttpProviderInterface
+    public function solidityNode(): HttpProviderInterface
     {
         if (!array_key_exists('solidityNode', $this->providers)) {
             throw new TronException('Solidity node is not activated.');
@@ -188,18 +186,18 @@ class TronManager
     public function request($url, $params = [], $method = 'post')
     {
         $split = explode('/', $url);
-        if(in_array($split[0], ['walletsolidity', 'walletextension'])) {
+        if (in_array($split[0], ['walletsolidity', 'walletextension'])) {
             $response = $this->solidityNode()->request($url, $params, $method);
-        } elseif(in_array($split[0], ['event'])) {
+        } elseif (in_array($split[0], ['event'])) {
             $response = $this->eventServer()->request($url, $params, 'get');
         } elseif (in_array($split[0], ['trx-sign'])) {
             $response = $this->signServer()->request($url, $params, 'post');
-        } elseif(in_array($split[0], ['api'])) {
+        } elseif (in_array($split[0], ['api'])) {
             $response = $this->explorer()->request($url, $params, 'get');
-        } elseif(in_array($split[0], ['validtors'])) {
-            $response = $this->buckupServer()->getClient()->post($url,['form_params' =>$params]);
+        } elseif (in_array($split[0], ['validtors'])) {
+            $response = $this->buckupServer()->getClient()->post($url, ['form_params' => $params]);
             $response = $response->getBody()->getContents();
-        }else {
+        } else {
             $response = $this->fullNode()->request($url, $params, $method);
         }
 
@@ -210,7 +208,7 @@ class TronManager
      * Check connections
      *
      * @return array
-    */
+     */
     public function isConnected()
     {
         $array = [];
