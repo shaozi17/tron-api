@@ -709,7 +709,7 @@ class Tron implements TronInterface
         }
 
         $transaction       = $this->transactionBuilder->delegateResource($to, $amount, $resource, $lock, $lock_period, $from);
-        $signedTransaction = $this->signTransaction($transaction, $message);
+        $signedTransaction = $this->signTransaction($transaction, null);
 
 
         $response = $this->sendRawTransaction($signedTransaction);
@@ -722,7 +722,7 @@ class Tron implements TronInterface
         }
 
         $transaction       = $this->transactionBuilder->undelegateResource($to, $amount, $resource, $from);
-        $signedTransaction = $this->signTransaction($transaction, $message);
+        $signedTransaction = $this->signTransaction($transaction, null);
 
 
         $response = $this->sendRawTransaction($signedTransaction);
