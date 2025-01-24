@@ -1057,6 +1057,28 @@ class Tron implements TronInterface
     }
 
     /**
+     * Unfreeze TRX that has passed the minimum freeze duration.
+     * Unfreezing will remove bandwidth and TRON Power.
+     *
+     * @param string $resource
+     * @param string $owner_address
+     * @return array
+     * @throws TronException
+     */
+    public function unfreezeBalanceV2(float $amount = 0, string $resource = 'BANDWIDTH', string $owner_address = null)
+    {
+        if ($owner_address == null) {
+            $owner_address = $this->address['hex'];
+        }
+
+        $unfreeze          = $this->transactionBuilder->unfreezeBalanceV2($amount, $resource, $owner_address);
+        $signedTransaction = $this->signTransaction($unfreeze);
+        $response          = $this->sendRawTransaction($signedTransaction);
+
+        return array_merge($response, $signedTransaction);
+    }
+
+    /**
      * Withdraw Super Representative rewards, useable every 24 hours.
      *
      * @param string $owner_address

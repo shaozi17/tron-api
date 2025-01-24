@@ -381,6 +381,28 @@ class TransactionBuilder
     }
 
     /**
+     * Unfreeze TRX that has passed the minimum freeze duration.
+     * Unfreezing will remove bandwidth and TRON Power.
+     *
+     * @param string $resource
+     * @param string $owner_address
+     * @return array
+     * @throws TronException
+     */
+    public function unfreezeBalanceV2(float $amount = 0, string $resource = 'BANDWIDTH', string $owner_address = '')
+    {
+        if (!in_array($resource, ['BANDWIDTH', 'ENERGY'])) {
+            throw new TronException('Invalid resource provided: Expected "BANDWIDTH" or "ENERGY"');
+        }
+
+        return $this->tron->getManager()->request('wallet/unfreezebalancev2', [
+            'owner_address'    => $this->tron->address2HexString($owner_address),
+            'unfreeze_balance' => $this->tron->toTron($amount),
+            'resource'         => $resource
+        ]);
+    }
+
+    /**
      * Withdraw Super Representative rewards, useable every 24 hours.
      *
      * @param string $owner_address
