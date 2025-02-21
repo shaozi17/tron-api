@@ -1,6 +1,6 @@
 {
   "name": "shaozi17/tron-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A PHP API for interacting with Tron (Trx),support Stake2.0",
   "license": "MIT",
   "type": "library",
