@@ -827,11 +827,11 @@ class Tron implements TronInterface
      */
     public function changeAccountName(string $address = null, string $account_name)
     {
-        $address = (!is_null($address) ? $address : $this->address['hex']);
+        $address = (!is_null($address) ? $this->toHex($address) : $this->address['hex']);
 
         $transaction = $this->manager->request('wallet/updateaccount', [
             'account_name'  => $this->stringUtf8toHex($account_name),
-            'owner_address' => $this->toHex($address)
+            'owner_address' => $address
         ]);
 
         $signedTransaction = $this->signTransaction($transaction);
@@ -1281,7 +1281,7 @@ class Tron implements TronInterface
      */
     public function validateAddress(string $address = null, bool $hex = false): array
     {
-        $address = (!is_null($address) ? $address : $this->address['hex']);
+        $address = (!is_null($address) ? $address : $this->address['base58']);
         if ($hex) {
             $address = $this->toHex($address);
         }
@@ -1382,10 +1382,10 @@ class Tron implements TronInterface
      */
     public function getAccountResources(string $address = null)
     {
-        $address = (!is_null($address) ? $address : $this->address['hex']);
+        $address = (!is_null($address) ? $this->toHex($address) : $this->address['hex']);
 
         return $this->manager->request('/wallet/getaccountresource', [
-            'address' => $this->toHex($address)
+            'address' => $address
         ]);
     }
 
