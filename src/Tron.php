@@ -119,6 +119,7 @@ class Tron implements TronInterface
             'solidityNode' => $solidityNode,
             'eventServer'  => $eventServer,
             'signServer'   => $signServer,
+            'backupServer' => null,
         ]));
 
         $this->transactionBuilder = new TransactionBuilder($this);

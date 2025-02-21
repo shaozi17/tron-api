@@ -45,7 +45,8 @@ class TronManager
         'fullNode'     => 'wallet/getnowblock',
         'solidityNode' => 'walletsolidity/getnowblock',
         'eventServer'  => 'healthcheck',
-        'explorer'     => 'api/system/status'
+        'explorer'     => 'api/system/status',
+        'backupServer' => ''
     ];
 
     /**
